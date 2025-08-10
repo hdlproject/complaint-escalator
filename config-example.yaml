@@ -1,0 +1,22 @@
+interval: 5m
+backoff: 2m
+template: "Test complaint template for automated testing."
+channels:
+  - email
+  - notification
+
+# Azure Communication Services configuration (test values)
+acs:
+  connection_string: "endpoint=https://test-acs.asiapacific.communication.azure.com/;accesskey=test-access-key"
+  domain: "test-domain.dev"
+  from_email: "test@test-domain.dev"
+
+# Email configuration (test values)
+email:
+  to:
+    - "test@example.com"
+  cc:
+    - "cc-test@example.com"
+  bcc:
+    - "bcc-test@example.com"
+  reply_to: "reply-test@example.com" 
