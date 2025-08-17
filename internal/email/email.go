@@ -196,20 +196,6 @@ func convertToAzureEmailAddresses(addresses []string) []azureEmailAddress {
 	return result
 }
 
-// GetEmailClientFromConfig creates an email client from the provided configuration
-func GetEmailClientFromConfig(acsConnectionString string) (*EmailClient, error) {
-	if acsConnectionString == "" {
-		return nil, fmt.Errorf("ACS connection string is not configured")
-	}
-
-	client, err := NewEmailClient(acsConnectionString)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create email client: %w", err)
-	}
-
-	return client, nil
-}
-
 // CreateEmailMessageFromConfig creates an email message from the provided configuration
 func CreateEmailMessageFromConfig(fromEmail string, toEmails, ccEmails, bccEmails []string, replyTo string, subject, body string) EmailMessage {
 	msg := EmailMessage{

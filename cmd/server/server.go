@@ -33,7 +33,7 @@ type Server struct {
 // NewServer creates a new HTTP server instance
 func NewServer(cfg config.Config) (*Server, error) {
 	// Initialize email client
-	emailClient, err := email.GetEmailClientFromConfig(cfg.ACS.ConnectionString)
+	emailClient, err := email.NewEmailClient(cfg.ACS.ConnectionString)
 	if err != nil {
 		return nil, fmt.Errorf("failed to initialize email client: %w", err)
 	}

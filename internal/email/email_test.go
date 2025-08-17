@@ -16,12 +16,18 @@ func TestEmailClientCreation(t *testing.T) {
 	}
 
 	// Test email client creation from config
-	emailClient, err := GetEmailClientFromConfig(cfg.ACS.ConnectionString)
+	emailClient, err := NewEmailClient(cfg.ACS.ConnectionString)
 	if err != nil {
 		t.Fatalf("Failed to create email client: %v", err)
 	}
 	if emailClient == nil {
 		t.Fatal("Email client should not be nil")
+	}
+
+	// Test with empty connection string
+	_, err = NewEmailClient("")
+	if err == nil {
+		t.Error("Expected error for empty connection string")
 	}
 }
 
@@ -40,7 +46,7 @@ func TestEmailMessageValidation(t *testing.T) {
 		t.Fatalf("Failed to load test config: %v", err)
 	}
 
-	emailClient, err := GetEmailClientFromConfig(cfg.ACS.ConnectionString)
+	emailClient, err := NewEmailClient(cfg.ACS.ConnectionString)
 	if err != nil {
 		t.Fatalf("Failed to create email client: %v", err)
 	}
@@ -109,24 +115,6 @@ func TestConnectionStringParsing(t *testing.T) {
 
 	if emailClient == nil {
 		t.Fatal("Email client should not be nil")
-	}
-}
-
-func TestGetEmailClientFromConfig(t *testing.T) {
-	// Test with valid connection string
-	testConnStr := "endpoint=https://test-acs.asiapacific.communication.azure.com/;accesskey=test-access-key"
-	emailClient, err := GetEmailClientFromConfig(testConnStr)
-	if err != nil {
-		t.Fatalf("Failed to create email client from config: %v", err)
-	}
-	if emailClient == nil {
-		t.Fatal("Email client should not be nil")
-	}
-
-	// Test with empty connection string
-	_, err = GetEmailClientFromConfig("")
-	if err == nil {
-		t.Error("Expected error for empty connection string")
 	}
 }
 

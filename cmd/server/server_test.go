@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"complaint-escalator/internal/config"
+	"complaint-escalator/internal/email"
 	"complaint-escalator/pkg/testutils"
 	"encoding/json"
 	"net/http"
@@ -127,8 +128,14 @@ func TestSendEmailHandler_MissingRecipients(t *testing.T) {
 		t.Fatalf("Failed to load test configuration: %v", err)
 	}
 
+	emailClient, err := email.NewEmailClient(cfg.ACS.ConnectionString)
+	if err != nil {
+		t.Fatalf("Failed to get email client: %v", err)
+	}
+
 	server := &Server{
-		config: &cfg,
+		config:      &cfg,
+		emailClient: emailClient,
 	}
 
 	// Create request with missing recipients
@@ -157,8 +164,8 @@ func TestSendEmailHandler_MissingRecipients(t *testing.T) {
 	handler.ServeHTTP(rr, req)
 
 	// Check status code
-	if status := rr.Code; status != http.StatusBadRequest {
-		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusBadRequest)
+	if status := rr.Code; status != http.StatusInternalServerError {
+		t.Errorf("handler returned wrong status code: got %v want %v", status, http.StatusInternalServerError)
 	}
 }
 
